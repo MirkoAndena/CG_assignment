@@ -115,7 +115,7 @@ function normalVersorForCylinder(r, teta) {
 function drawCylinder() {
 	let vert = [];
 	let r = 3; 
-	let fractions = 21; 
+	let fractions = 20; 
 	let d = Math.PI / fractions;
 
 	vert.push([0, 3, 0, 0, 1, 0]);
@@ -133,7 +133,7 @@ function drawCylinder() {
 	}
 
 	let ind = [];
-	for (k = 2; k < vert.length; k = k + 4) {
+	for (k = 2; k < vert.length - 7; k = k + 4) {
 		ind.push(k);
 		ind.push(k+6);
 		ind.push(k+2);
@@ -150,6 +150,22 @@ function drawCylinder() {
 		ind.push(k+7);
 		ind.push(1);
 	}
+
+	ind.push(vert.length - 4);
+	ind.push(4);
+	ind.push(vert.length - 2);
+	
+	ind.push(vert.length - 4);
+	ind.push(2);
+	ind.push(4);
+	
+	ind.push(vert.length - 3);
+	ind.push(0);
+	ind.push(3);
+	
+	ind.push(vert.length - 1);
+	ind.push(5);
+	ind.push(1);
 
 	return { "vertices": vert, "indexes": ind };
 }
