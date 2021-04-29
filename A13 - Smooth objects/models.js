@@ -154,37 +154,44 @@ function drawCylinder() {
 	return { "vertices": vert, "indexes": ind };
 }
 
-function normalVersorForSphere(r, teta) {
-	let t = [Math.cos(teta), 0, Math.sin(teta)];
+function normalVersorForSphere(r, teta, phi) {
+	let r2 = Math.pow(r, 2);
+	let sinTeta = Math.sin(teta);
+	let sin2Teta = Math.pow(sinTeta, 2);
+	let cosTeta = Math.cos(teta);
+	let sinPhi = Math.sin(phi);
+	let cosPhi = Math.cos(phi);
+	let t = [
+		- r2 * sin2Teta * cosPhi,
+		- r2 * sinTeta * cosTeta,
+		- r2 * sin2Teta * sinPhi
+	];
 	let len = magnitude(t);
 	return [t[0]/len, t[1]/len, t[2]/len];
 }
 
 function drawSphere() {
 	var vert = [];
-	let r = 2; 
-	let fractions = 100; 
+	let r = 3; 
+	let fractions = 5; 
 	let d = Math.PI / fractions;
-	let range = 2 * Math.PI;
-	let k;
-	for(k = 0; k < 2*Math.PI; k = k + d) {
-		for(j = 0; j < 2 * Math.PI; j = j + d) {
-			let x = r * Math.sin(k) * Math.cos(j);
+	let k, j;
+	for(k = - Math.PI; k < Math.PI; k = k + d) {
+		for(j = - Math.PI; j < Math.PI; j = j + d) {
+			let x = r * Math.sin(k) * Math.cos(j); 
 			let z = r * Math.sin(k) * Math.sin(j);
 			let y = r * Math.cos(k);
-			let norm = normalVersorForSphere(r, k);
+			let norm = normalVersorForSphere(r, k, j);
 			vert.push([x, y, z, norm[0], norm[1], norm[2]]);
 		}
 	}
 
 	var ind = [];
-	for(k = 0; k < vert.length - range - 1; k++) {
-		// Primo triangolo
+	for(k = 0; k < vert.length - 2 * fractions; k++) {
 		ind.push(k);
 		ind.push(k + 2 * fractions);
 		ind.push(k + 1);
 		
-		// Secondo triangolo
 		ind.push(k);
 		ind.push(k + 2 * fractions - 1);
 		ind.push(k + 2 * fractions);
