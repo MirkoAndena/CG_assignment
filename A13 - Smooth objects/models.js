@@ -106,7 +106,7 @@ function drawFunction() {
 	return { "vertices": vert, "indexes": ind };
 }
 
-function normalVersorForCylinder(r, teta) {
+function normalVersorForCylinder(teta) {
 	let t = [Math.cos(teta), 0, Math.sin(teta)];
 	let len = magnitude(t);
 	return [t[0]/len, t[1]/len, t[2]/len];
@@ -126,7 +126,7 @@ function drawCylinder() {
 		for(j = 3; j >= -3; j = j - 6) {
 			let x = r * Math.cos(k);
 			let z = r * Math.sin(k);
-			let norm = normalVersorForCylinder(r, k);
+			let norm = normalVersorForCylinder(k);
 			vert.push([x, j, z, norm[0], norm[1], norm[2]]);
 			vert.push([x, j, z, 0, j == -3 ? -1 : 1, 0]);
 		}
