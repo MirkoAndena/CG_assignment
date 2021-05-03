@@ -99,20 +99,27 @@ function drawCube() {
 function drawCylinder() {
 
 	let vert = [];
-	let fractions = 2; 
+	let fractions = 21; 
 	let d = Math.PI / fractions;
 
-	vert.push([0, 3, 0, 0, 1, 0]);
-	vert.push([0, -3, 0, 0, -1, 0]);
+	vert.push([0, 1, 0, 0, 1, 0, 0.625, 0.875]);
+	vert.push([0, -1, 0, 0, -1, 0, 0.875, 0.875]);
 
 	let k, j;
-	for(k = 0; k < 2*Math.PI; k = k + d) {
-		for(j = 3; j >= -3; j = j - 6) {
+	for(k = 0; k <= 2*Math.PI; k = k + d) {
+		for(j = 1; j >= -1; j = j - 2) {
 			let x = Math.cos(k);
 			let z = Math.sin(k);
 			let norm = normalVersorForCylinder(k);
-			vert.push([x, j, z, norm[0], norm[1], norm[2], 0, 0, 0]);
-			vert.push([x, j, z, 0, j == -3 ? -1 : 1, 0, 0, 0, 0]);
+			
+			let xBodyTexture = 1 - (k * 0.5) / (2 * Math.PI);
+			let yBodyTexture = j > 0 ? 0.75 : 0.5;
+			
+			vert.push([x, j, z, norm[0], norm[1], norm[2], xBodyTexture, yBodyTexture]);
+
+			let xTexture = 0.625 + 0.125 * x + (j > 0 ? 0 : 0.25);
+			let zTexture = 0.875 + 0.125 * z;
+			vert.push([x, j, z, 0, j, 0, xTexture, zTexture]);
 		}
 	}
 
