@@ -112,11 +112,14 @@ function drawCylinder() {
 			let z = Math.sin(k);
 			let norm = normalVersorForCylinder(k);
 			
+			// Conversione da 0 - 2PI (facciata del cilindro srotolato) a 0.5 - 1
 			let xBodyTexture = 1 - (k * 0.5) / (2 * Math.PI);
+			// Texture sopra o sotto
 			let yBodyTexture = j > 0 ? 0.75 : 0.5;
 			
 			vert.push([x, j, z, norm[0], norm[1], norm[2], xBodyTexture, yBodyTexture]);
 
+			// Formula cerchio coordinate polari (con cambio centro se faccia sotto)
 			let xTexture = 0.625 + 0.125 * x + (j > 0 ? 0 : 0.25);
 			let zTexture = 0.875 + 0.125 * z;
 			vert.push([x, j, z, 0, j, 0, xTexture, zTexture]);

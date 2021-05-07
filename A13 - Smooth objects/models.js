@@ -60,10 +60,10 @@ function drawCube() {
 }
 
 function normalVersorForFunction(vett) {
+	// Prodotto vettoriale delle derivate (direzioni rispetto ai due assi), trovo cosi il vettore normale
 	var vettNorm = [-Math.cos(vett[0])*Math.cos(vett[2]), 1, Math.sin(vett[0])*Math.sin(vett[2])];
 	var len = magnitude(vettNorm);
 	var versNorm = [vettNorm[0]/len, vettNorm[1]/len, vettNorm[2]/len];
-	//console.log(lenght(versNorm) == 1);
 	return versNorm;
 }
 
@@ -107,6 +107,7 @@ function drawFunction() {
 }
 
 function normalVersorForCylinder(teta) {
+	// Prodotto vettoriale delle derivate (direzioni rispetto ai due assi), trovo cosi il vettore normale
 	let t = [Math.cos(teta), 0, Math.sin(teta)];
 	let len = magnitude(t);
 	return [t[0]/len, t[1]/len, t[2]/len];
@@ -128,7 +129,7 @@ function drawCylinder() {
 			let z = r * Math.sin(k);
 			let norm = normalVersorForCylinder(k);
 			vert.push([x, j, z, norm[0], norm[1], norm[2]]);
-			vert.push([x, j, z, 0, j == -3 ? -1 : 1, 0]);
+			vert.push([x, j, z, 0, j == -3 ? -1 : 1, 0]); // vertici con versori verso alto e basso
 		}
 	}
 
@@ -151,6 +152,7 @@ function drawCylinder() {
 		ind.push(1);
 	}
 
+	// Ultimi triangoli che devono usare i primi vertici
 	ind.push(vert.length - 4);
 	ind.push(4);
 	ind.push(vert.length - 2);
@@ -171,6 +173,8 @@ function drawCylinder() {
 }
 
 function normalVersorForSphere(r, teta, phi) {
+	// Coordinate sferiche
+	// Prodotto vettoriale delle derivate (direzioni rispetto ai due assi), trovo cosi il vettore normale
 	let r2 = Math.pow(r, 2);
 	let sinTeta = Math.sin(teta);
 	let sin2Teta = Math.pow(sinTeta, 2);

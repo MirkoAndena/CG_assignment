@@ -26,6 +26,7 @@ function Anim3(t) {
 let index = 0;
 function Anim4(t) {
 	// buring flame
+	// Indici che rispecchiano l'andamento nel testo
 	let row = 5 - ((index / 12) | 0);
 	let column = index % 12;
 	index = (index + 1) % (12 * 6);
@@ -40,6 +41,7 @@ function Anim4(t) {
 	);
 }
 
+// Esegue la moltiplicazione partendo dall' ultima
 function mul(...matrices) {
 	var M = matrices[matrices.length - 1];
 	let i;
