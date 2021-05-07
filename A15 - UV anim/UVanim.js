@@ -29,15 +29,14 @@ function Anim4(t) {
 	let row = 5 - ((index / 12) | 0);
 	let column = index % 12;
 	index = (index + 1) % (12 * 6);
-	
-	let offset = [0, 0];
-	let distance = [0.084, 0.084];
+
+	let distance = 0.25 / 3;
 	return mul(
-		utils.MakeScaleMatrix(1/8),
 		utils.MakeTranslateMatrix(
-			offset[0] + column * distance[0],
-			offset[1] + row * distance[1],
-		0)
+			column * distance,
+			row * distance,
+		0),
+		utils.MakeScaleNuMatrix(1/12, 1/12, 1)
 	);
 }
 
