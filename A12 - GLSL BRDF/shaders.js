@@ -75,9 +75,9 @@ var S4 = `
 
 // Ambient, Toon diffuse and and Toon (Blinn based) specular. No emssion.
 var S5 = `
-	vec4 diffA = lightColorA * dot(lightDirA, normalVec);
-	vec4 diffB = lightColorB * dot(lightDirB, normalVec);
-	vec4 diffC = lightColorC * dot(lightDirC, normalVec);
+	vec4 diffA = dot(lightDirA, normalVec) >= DToonTh ? diffColor : (0, 0, 0, 1);
+	vec4 diffB = dot(lightDirB, normalVec) >= DToonTh ? diffColor : (0, 0, 0, 1);
+	vec4 diffC = dot(lightDirC, normalVec) >= DToonTh ? diffColor : (0, 0, 0, 1);
 	vec4 specA = lightColorA * dot(eyedirVec, 2.0 * normalVec * dot(lightDirA, normalVec) - lightDirA);
 	vec4 specB = lightColorB * dot(eyedirVec, 2.0 * normalVec * dot(lightDirB, normalVec) - lightDirB);
 	vec4 specC = lightColorC * dot(eyedirVec, 2.0 * normalVec * dot(lightDirC, normalVec) - lightDirC);
