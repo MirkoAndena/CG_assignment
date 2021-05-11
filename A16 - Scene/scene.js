@@ -1,29 +1,41 @@
+var matrices = [ ];
+
 function drawSceneTree(S) {
 	var i;
 	for(i = 0; i < S.length; i++) {
+		let parentMatrix = i == 0 ? utils.identityMatrix() : matrices[getParent(S, i)];
+		let childMatrix = getMatrixOf(S, i);
+		let matrix = utils.multiplyMatrices(parentMatrix, childMatrix);
 
-		let parent = getParent(S, i);
-		if (parent != -1) {
-			//S[i][0] = S[i][0] + S[parent][0];
-			//S[i][1] = S[i][1] + S[parent][1];
-			//S[i][2] = S[i][2] + S[parent][2];
-			S[i][3] = S[i][3] + S[parent][3];
-			S[i][4] = S[i][4] + S[parent][4];
-			S[i][5] = S[i][5] + S[parent][5];
-		}
-
-		draw(i, utils.multiplyMatrices(utils.multiplyMatrices(utils.multiplyMatrices(
-			 utils.MakeTranslateMatrix(S[i][0], S[i][1], S[i][2]),
-			 utils.MakeRotateZMatrix(S[i][5])),
-			 utils.MakeRotateXMatrix(S[i][3])),
-			 utils.MakeRotateYMatrix(S[i][4])));
+		matrices.push(matrix);
+		draw(i, matrix);
 	}
+
+	// Clear storage for next iteration
+	matrices = [];
+}
+
+function getMatrixOf(S, index) {
+	return mul(
+		utils.MakeTranslateMatrix(S[index][0], S[index][1], S[index][2]),
+		utils.MakeRotateZMatrix(S[index][5]),
+		utils.MakeRotateXMatrix(S[index][3]),
+		utils.MakeRotateYMatrix(S[index][4]));
 }
 
 function getParent(S, index) {
-	let j;
-	for (j = 0; j < S.length; j++)
-		if (S[j][6] <= index && index <= S[j][7])
-			return j
+	let candidate;
+	for (candidate = 0; candidate < S.length; candidate++)
+		if (S[candidate][6] <= index && index <= S[candidate][7])
+			return candidate
 	return -1;
+}
+
+// Esegue la moltiplicazione partendo dall' ultima
+function mul(...matrices) {
+	var M = matrices[matrices.length - 1];
+	let i;
+	for (i = matrices.length - 2; i >= 0; i--)
+		M = utils.multiplyMatrices(matrices[i], M);
+	return M;
 }
