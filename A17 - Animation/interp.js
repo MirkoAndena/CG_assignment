@@ -11,7 +11,28 @@ function InterpMat(
 	//
 	// return the interpolated transform matrix with the given position and rotation
 	
-	out = utils.identityMatrix();
-	
-	return out;			   
+	// Rotation interpolation
+	let initialRotation = createQuaternionFromEuler(rx1, ry1, rz1);
+	let finalRotation = createQuaternionFromEuler(rx2, ry2, rz2);
+	let rotation = initialRotation.slerp(finalRotation)(a);
+
+	// Translation interpolation (LINEAR)
+	let translation = utils.MakeTranslateMatrix(
+		linearInterpolation(tx1, tx2, a),
+		linearInterpolation(ty1, ty2, a),
+		linearInterpolation(tz1, tz2, a)
+	);
+
+	return utils.multiplyMatrices(translation, rotation.toMatrix4());;			   
+}
+
+function createQuaternionFromEuler(x, y, z) {
+	xr = utils.degToRad(x);
+	yr = utils.degToRad(y);
+	zr = utils.degToRad(z);
+	return Quaternion.fromEuler(zr, xr, yr, order = "ZXY");
+}
+
+function linearInterpolation(i, f, a) {
+	return (1 - a) * i + a * f;
 }
