@@ -1,3 +1,1 @@
 A11, A12: Controllare se sono corrette
-A13: La sfera ha un buco
-A15: Ogni tanto si vede del bianco durante l'animazione della fiamma

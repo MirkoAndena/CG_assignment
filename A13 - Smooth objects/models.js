@@ -182,9 +182,9 @@ function normalVersorForSphere(r, teta, phi) {
 	let sinPhi = Math.sin(phi);
 	let cosPhi = Math.cos(phi);
 	let t = [
-		- r2 * sin2Teta * cosPhi,
-		- r2 * sinTeta * cosTeta,
-		- r2 * sin2Teta * sinPhi
+		r2 * sin2Teta * cosPhi,
+		r2 * sinTeta * cosTeta,
+		r2 * sin2Teta * sinPhi
 	];
 	let len = magnitude(t);
 	return [t[0]/len, t[1]/len, t[2]/len];
@@ -193,11 +193,13 @@ function normalVersorForSphere(r, teta, phi) {
 function drawSphere() {
 	var vert = [];
 	let r = 3; 
-	let fractions = 5; 
-	let d = Math.PI / fractions;
+	let fractions = 30; 
+	let d = (Math.PI*2) / fractions;
+	let dh = d / 2;
 	let k, j;
-	for(k = - Math.PI; k < Math.PI; k = k + d) {
-		for(j = - Math.PI; j < Math.PI; j = j + d) {
+	vert.push([0, r, 0, 0, 1, 0]);
+	for(k = dh; k <= Math.PI-dh; k = k + dh) {
+		for(j = 0; j < 2*Math.PI; j = j + d) {
 			let x = r * Math.sin(k) * Math.cos(j); 
 			let z = r * Math.sin(k) * Math.sin(j);
 			let y = r * Math.cos(k);
@@ -205,17 +207,34 @@ function drawSphere() {
 			vert.push([x, y, z, norm[0], norm[1], norm[2]]);
 		}
 	}
+	vert.push([0, -r, 0, 0, -1, 0]);
 
 	var ind = [];
-	for(k = 0; k < vert.length - 2 * fractions; k++) {
-		ind.push(k);
-		ind.push(k + 2 * fractions);
-		ind.push(k + 1);
-		
-		ind.push(k);
-		ind.push(k + 2 * fractions - 1);
-		ind.push(k + 2 * fractions);
+	for(k = 0; k < fractions; k++) {
+		ind.push(0);
+		ind.push((k+1)%fractions+1);
+		ind.push(k+1);
 	}
 
+	for(k = 0; k < Math.floor(vert.length / fractions) - 1; k++) {
+		for(j = 0; j < fractions; j++) {
+			ind.push(j + k*fractions + 1);
+			ind.push((j + 1)%fractions + k*fractions + 1);
+			ind.push(j + (k+1)*fractions + 1);
+			
+			ind.push((j + 1)%fractions + k*fractions + 1);
+			ind.push((j + 1)%fractions + (k+1)*fractions + 1);
+			ind.push(j + (k+1)*fractions + 1);
+		}
+	}
+
+	let last = vert.length - 1;
+	let lastLineIndex = vert.length - 1 - fractions;
+	for(k = 0; k < fractions; k++) {
+		ind.push(last);
+		ind.push(lastLineIndex+k);
+		ind.push(lastLineIndex+(k+1)%fractions);
+	}
+	
 	return { "vertices": vert, "indexes": ind };
 }
