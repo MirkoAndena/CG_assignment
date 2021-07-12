@@ -75,12 +75,12 @@ var S4 = `
 
 // Ambient, Toon diffuse and and Toon (Blinn based) specular. No emssion.
 var S5 = `
-	vec4 diffA = dot(lightDirA, normalVec) >= DToonTh ? diffColor : (0, 0, 0, 1);
-	vec4 diffB = dot(lightDirB, normalVec) >= DToonTh ? diffColor : (0, 0, 0, 1);
-	vec4 diffC = dot(lightDirC, normalVec) >= DToonTh ? diffColor : (0, 0, 0, 1);
-	vec4 specA = lightColorA * dot(eyedirVec, 2.0 * normalVec * dot(lightDirA, normalVec) - lightDirA);
-	vec4 specB = lightColorB * dot(eyedirVec, 2.0 * normalVec * dot(lightDirB, normalVec) - lightDirB);
-	vec4 specC = lightColorC * dot(eyedirVec, 2.0 * normalVec * dot(lightDirC, normalVec) - lightDirC);
+	vec4 diffA = dot(lightDirA, normalVec) >= DToonTh ? lightColorA : (0, 0, 0, 1);
+	vec4 diffB = dot(lightDirB, normalVec) >= DToonTh ? lightColorB : (0, 0, 0, 1);
+	vec4 diffC = dot(lightDirC, normalVec) >= DToonTh ? lightColorC : (0, 0, 0, 1);
+	vec4 specA = dot(normalVec, normalize(lightDirA + eyedirVec)) >= SToonTh ? lightColorA : (0, 0, 0, 1);
+	vec4 specB = dot(normalVec, normalize(lightDirA + eyedirVec)) >= SToonTh ? lightColorB : (0, 0, 0, 1);
+	vec4 specC = dot(normalVec, normalize(lightDirA + eyedirVec)) >= SToonTh ? lightColorC : (0, 0, 0, 1);
 	out_color = clamp(diffColor * (diffA + diffB + diffC) + specularColor * (specA + specB + specC) + ambientLight * ambColor, 0.0, 1.0);
 `;
 

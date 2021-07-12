@@ -27,11 +27,11 @@ let index = 0;
 function Anim4(t) {
 	// buring flame
 	// Indici che rispecchiano l'andamento nel testo
-	let row = 5 - ((index / 12) | 0);
+	let row = 5 - ((index / 12) | 0); // conversione ad intero
 	let column = index % 12;
 	index = (index + 1) % (12 * 6);
 
-	let distance = 0.25 / 3;
+	let distance = 0.25 / 3; // in 0.25 ci sono 3 immagini
 	return mul(
 		utils.MakeTranslateMatrix(
 			column * distance,
